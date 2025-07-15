@@ -1,0 +1,121 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f4f4f4;
+}
+.invoice-container {
+  background: #fff;
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.header {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+table.form-identitas {
+  margin-bottom: 20px;
+}
+table.form-identitas td {
+  padding: 3px 10px 3px 0;
+  vertical-align: top;
+}
+table.form-identitas input {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+.form-barang, .form-tambah-barang {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.form-barang input, .form-barang select, .form-barang button,
+.form-tambah-barang input, .form-tambah-barang button {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+.form-barang button, .form-tambah-barang button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.form-barang button:hover, .form-tambah-barang button:hover {
+  background-color: #0056b3;
+}
+table.invoice-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+}
+table.invoice-table th, table.invoice-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+table.invoice-table th {
+  background-color: #eee;
+}
+.total {
+  text-align: right;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.actions {
+  text-align: right;
+  margin-top: 20px;
+}
+.btn {
+  padding: 8px 15px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.btn:hover {
+  background: #0056b3;
+}
+.hapus-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.hapus-btn:hover {
+  background: darkred;
+}
+.print-text {
+  display: none;
+  font-weight: normal;
+}
+@media print {
+  .form-identitas input,
+  .form-barang,
+  .form-tambah-barang,
+  .actions,
+  .hapus-btn,
+  table.invoice-table td input {
+    display: none !important;
+  }
+  table.invoice-table th:last-child,
+  table.invoice-table td:last-child {
+    display: none !important;
+  }
+  .print-text {
+    display: block !important;
+    padding: 4px 0;
+  }
+}

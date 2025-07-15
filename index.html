@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice Trisna Kencana</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="invoice-container" id="invoice">
+    <div class="header">TRISKA KENCANA</div>
+    <p><strong>Tanggal:</strong> <span id="tanggal"></span></p>
+
+    <table class="form-identitas">
+      <tr>
+        <td><strong>Nama:</strong></td>
+        <td>
+          <input type="text" id="inputNama" oninput="updatePreview()">
+          <div class="print-text" id="previewNama"></div>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Alamat:</strong></td>
+        <td>
+          <input type="text" id="inputAlamat" oninput="updatePreview()">
+          <div class="print-text" id="previewAlamat"></div>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>No. Telp:</strong></td>
+        <td>
+          <input type="text" id="inputTelp" oninput="updatePreview()">
+          <div class="print-text" id="previewTelp"></div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="form-barang">
+      <select id="barang">
+        <option value="">-- Pilih Barang --</option>
+        <option value="Karpet Full">Karpet Full</option>
+        <option value="Blower Air">Blower Air</option>
+        <option value="Lampu">Lampu</option>
+        <option value="Cover Dinding 6m">Cover Dinding 6m</option>
+        <option value="Cover Dinding 4m">Cover Dinding 4m</option>
+      </select>
+      <input type="number" id="jumlah" placeholder="Jumlah">
+      <input type="number" id="harga" placeholder="Harga (Rp)">
+      <button onclick="tambahBarang()">Tambah</button>
+    </div>
+
+    <div class="form-tambah-barang">
+      <input type="text" id="barangBaru" placeholder="Nama Barang Baru">
+      <input type="number" id="hargaBaru" placeholder="Harga Barang (Rp)">
+      <button onclick="tambahBarangBaru()">Tambah Barang Baru</button>
+    </div>
+
+    <table class="invoice-table">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama Barang</th>
+          <th>Jumlah</th>
+          <th>Harga</th>
+          <th>Total</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="tabel-barang"></tbody>
+    </table>
+
+    <div class="total" id="total-akhir">TOTAL: Rp -</div>
+
+    <div class="actions">
+      <button class="btn" onclick="cetakInvoice()">Cetak</button>
+    </div>
+  </div>
+
+  <script>
+    const hargaDefault = {
+      "Karpet Full": 100000,
+      "Blower Air": 50000,
+      "Lampu": 25000,
+      "Cover Dinding 6m": 75000,
+      "Cover Dinding 4m": 60000
+    };
+
+    const today = new Date();
+    document.getElementById("tanggal").textContent = today.toLocaleDateString("id-ID");
+
+    let dataBarang = [];
+
+    document.getElementById("barang").addEventListener("change", function () {
+      const barang = this.value;
+      document.getElementById("harga").value = hargaDefault[barang] || "";
+    });
+
+    function tambahBarang() {
+      const barang = document.getElementById("barang").value;
+      const jumlah = parseInt(document.getElementById("jumlah").value);
+      const harga = parseInt(document.getElementById("harga").value);
+
+      if (!barang || isNaN(jumlah) || isNaN(harga)) {
+        alert("Mohon isi semua kolom!");
+        return;
+      }
+
+      const total = jumlah * harga;
+      dataBarang.push({ barang, jumlah, harga, total });
+      renderTabel();
+      resetForm();
+    }
+
+    function tambahBarangBaru() {
+      const namaBaru = document.getElementById("barangBaru").value.trim();
+      const hargaBaru = parseInt(document.getElementById("hargaBaru").value);
+
+      if (!namaBaru || isNaN(hargaBaru) || hargaBaru <= 0) {
+        alert("Nama dan harga barang harus diisi dengan benar!");
+        return;
+      }
+
+      const barangSelect = document.getElementById("barang");
+      const option = document.createElement("option");
+      option.text = namaBaru;
+      option.value = namaBaru;
+      barangSelect.appendChild(option);
+
+      hargaDefault[namaBaru] = hargaBaru;
+
+      document.getElementById("barangBaru").value = "";
+      document.getElementById("hargaBaru").value = "";
+
+      alert(`Barang "${namaBaru}" berhasil ditambahkan.`);
+    }
+
+    function hapusBarang(index) {
+      dataBarang.splice(index, 1);
+      renderTabel();
+    }
+
+    function renderTabel() {
+      const tbody = document.getElementById("tabel-barang");
+      tbody.innerHTML = "";
+      let totalAkhir = 0;
+
+      dataBarang.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${item.barang}</td>
+          <td>${item.jumlah}</td>
+          <td>
+            <input type="number" value="${item.harga}" onchange="updateHarga(${index}, this.value)" style="width: 100px;">
+            <div class="print-text">Rp ${item.harga.toLocaleString('id-ID')}</div>
+          </td>
+          <td id="total-${index}">Rp ${item.total.toLocaleString('id-ID')}</td>
+          <td><button class="hapus-btn" onclick="hapusBarang(${index})">Hapus</button></td>
+        `;
+        tbody.appendChild(tr);
+        totalAkhir += item.total;
+      });
+
+      document.getElementById("total-akhir").textContent = "TOTAL: Rp " + totalAkhir.toLocaleString('id-ID');
+    }
+
+    function updateHarga(index, newHarga) {
+      newHarga = parseInt(newHarga) || 0;
+      dataBarang[index].harga = newHarga;
+      dataBarang[index].total = newHarga * dataBarang[index].jumlah;
+
+      document.getElementById(`total-${index}`).textContent = "Rp " + dataBarang[index].total.toLocaleString('id-ID');
+
+      const baris = document.querySelectorAll("#tabel-barang tr")[index];
+      const printText = baris.querySelector(".print-text");
+      if (printText) {
+        printText.textContent = "Rp " + newHarga.toLocaleString('id-ID');
+      }
+
+      let totalAkhir = dataBarang.reduce((sum, item) => sum + item.total, 0);
+      document.getElementById("total-akhir").textContent = "TOTAL: Rp " + totalAkhir.toLocaleString('id-ID');
+    }
+
+    function resetForm() {
+      document.getElementById("barang").value = "";
+      document.getElementById("jumlah").value = "";
+      document.getElementById("harga").value = "";
+    }
+
+    function cetakInvoice() {
+      updatePreview();
+      setTimeout(() => window.print(), 100);
+    }
+
+    function updatePreview() {
+      document.getElementById("previewNama").textContent = document.getElementById("inputNama").value || "-";
+      document.getElementById("previewAlamat").textContent = document.getElementById("inputAlamat").value || "-";
+      document.getElementById("previewTelp").textContent = document.getElementById("inputTelp").value || "-";
+    }
+  </script>
+</body>
+</html>
