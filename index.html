@@ -37,21 +37,38 @@
     <div class="form-barang">
       <select id="barang">
         <option value="">-- Pilih Barang --</option>
-        <option value="Karpet Full">Karpet Full</option>
-        <option value="Blower Air">Blower Air</option>
-        <option value="Lampu">Lampu</option>
-        <option value="Cover Dinding 6m">Cover Dinding 6m</option>
-        <option value="Cover Dinding 4m">Cover Dinding 4m</option>
+        <option value="TENDA POLOS 4X6">TENDA POLOS 4X6</option>
+        <option value="TENDA SEMI 4X6">TENDA SEMI 4X6</option>
+        <option value="TENDA BALON 4X6">TENDA BALON 4X6</option>
+        <option value="TENDA SKAK 4X6">TENDA SKAK 4X6</option>
+        <option value="TENDA LAMPION 4X6">TENDA LAMPION 4X6</option>
+        <option value="TENDA LAPIS 4X6">TENDA LAPIS 4X6</option>
+        <option value="TENDA POLOS 6X6">TENDA POLOS 6X6</option>
+        <option value="TENDA SEMI 6X6">TENDA SEMI 6X6</option>
+        <option value="TENDA LAMPION 6X6">TENDA LAMPION 6X6</option>
+        <option value="TENDA BALON 6X6">TENDA BALON 6X6</option>
+        <option value="TENDA SKAK 6X6">TENDA SKAK 6X6</option>
+        <option value="TENDA LAPIS 6X6">TENDA LAPIS 6X6</option>
+        <option value="KURSI BIASA">KURSI BIASA</option>
+        <option value="KURSI COVER">KURSI COVER</option>
+        <option value="MEJA BIASA">MEJA BIASA</option>
+        <option value="MEJA BULAT">MEJA BULAT</option>
+        <option value="MEJA + GUBUKAN">MEJA + GUBUKAN</option>
+        <option value="PIRING">PIRING</option>
+        <option value="MANGKOK BAKSO">MANGKOK BAKSO</option>
+        <option value="MANGKOK SOTO">MANGKOK SOTO</option>
+        <option value="PANGGUNG 4 X 4">PANGGUNG 4 X 4</option>
+        <option value="PANGGUNG 4 X 6">PANGGUNG 4 X 6</option>
+        <option value="PANGGUNG 6 X 6">PANGGUNG 6 X 6</option>
+        <option value="PANGGUNG 6 X 8">PANGGUNG 6 X 8</option>
+        <option value="BLOWER BIASA">BLOWER BIASA</option>
+        <option value="BLOWER AIR">BLOWER AIR</option>
+        <option value="TIRAI 6 METER">TIRAI 6 METER</option>
+        <option value="KARPET 1 METER">KARPET 1 METER</option>
       </select>
       <input type="number" id="jumlah" placeholder="Jumlah">
       <input type="number" id="harga" placeholder="Harga (Rp)">
       <button onclick="tambahBarang()">Tambah</button>
-    </div>
-
-    <div class="form-tambah-barang">
-      <input type="text" id="barangBaru" placeholder="Nama Barang Baru">
-      <input type="number" id="hargaBaru" placeholder="Harga Barang (Rp)">
-      <button onclick="tambahBarangBaru()">Tambah Barang Baru</button>
     </div>
 
     <table class="invoice-table">
@@ -77,11 +94,34 @@
 
   <script>
     const hargaDefault = {
-      "Karpet Full": 100000,
-      "Blower Air": 50000,
-      "Lampu": 25000,
-      "Cover Dinding 6m": 75000,
-      "Cover Dinding 4m": 60000
+       "TENDA POLOS 4X6": 300000,
+      "TENDA SEMI 4X6": 400000,
+      "TENDA BALON 4X6": 600000,
+      "TENDA SKAK 4X6": 750000,
+      "TENDA LAMPION 4X6": 800000,
+      "TENDA LAPIS 4X6": 850000,
+      "TENDA POLOS 6X6": 400000,
+      "TENDA SEMI 6X6": 900000,
+      "TENDA LAMPION 6X6": 1200000,
+      "TENDA BALON 6X6": 1200000,
+      "TENDA SKAK 6X6": 1000000,
+      "TENDA LAPIS 6X6": 950000,
+      "KURSI BIASA": 3500,
+      "KURSI COVER": 6000,
+      "MEJA BIASA": 50000,
+      "MEJA BULAT": 55000,
+      "MEJA + GUBUKAN": 100000,
+      "PIRING": 75000,
+      "MANGKOK BAKSO": 75000,
+      "MANGKOK SOTO": 75000,
+      "PANGGUNG 4 X 4": 700000,
+      "PANGGUNG 4 X 6": 1000000,
+      "PANGGUNG 6 X 6": 1100000,
+      "PANGGUNG 6 X 8": 1600000,
+      "BLOWER BIASA": 300000,
+      "BLOWER AIR": 350000,
+      "TIRAI 6 METER": 150000,
+      "KARPET 1 METER": 10000
     };
 
     const today = new Date();
@@ -108,29 +148,6 @@
       dataBarang.push({ barang, jumlah, harga, total });
       renderTabel();
       resetForm();
-    }
-
-    function tambahBarangBaru() {
-      const namaBaru = document.getElementById("barangBaru").value.trim();
-      const hargaBaru = parseInt(document.getElementById("hargaBaru").value);
-
-      if (!namaBaru || isNaN(hargaBaru) || hargaBaru <= 0) {
-        alert("Nama dan harga barang harus diisi dengan benar!");
-        return;
-      }
-
-      const barangSelect = document.getElementById("barang");
-      const option = document.createElement("option");
-      option.text = namaBaru;
-      option.value = namaBaru;
-      barangSelect.appendChild(option);
-
-      hargaDefault[namaBaru] = hargaBaru;
-
-      document.getElementById("barangBaru").value = "";
-      document.getElementById("hargaBaru").value = "";
-
-      alert(`Barang "${namaBaru}" berhasil ditambahkan.`);
     }
 
     function hapusBarang(index) {
