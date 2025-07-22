@@ -113,10 +113,12 @@
 </head>
 <body>
   <div class="invoice-container" id="invoice">
-    <div class="header">
-      <img src="logo.png" alt="Logo Triska Kencana" class="logo">
-    </div>
+    <div class="header" style="position: relative; align-items: center; justify-content: space-between;">
+  <h1 class="logo-text" style="margin: 0; font-family: 'poppins' , sans-serif; font-size: 32px; font-weight: 600;">Kop Triska Kencana</h1>
+  <img src="kop.jpeg" alt="Logo Triska Kencana" class="logo" style="position: absolute; right: 0; top: 0; height: 100px;">
+</div>
 
+    <p><strong>No. Invoice:</strong> <span id="nomor-invoice">INV-001</span></p>
     <p><strong>Tanggal:</strong> <span id="tanggal"></span></p>
 
     <table class="form-identitas">
@@ -144,7 +146,7 @@
     </table>
 
     <div class="form-barang">
-      <select id="barang">
+         <select id="barang">
         <option value="">-- Pilih Barang --</option>
         <option value="TENDA POLOS 4X6">TENDA POLOS 4X6</option>
         <option value="TENDA SEMI 4X6">TENDA SEMI 4X6</option>
@@ -178,6 +180,12 @@
       <input type="number" id="jumlah" placeholder="Jumlah">
       <input type="number" id="harga" placeholder="Harga (Rp)">
       <button onclick="tambahBarang()">Tambah</button>
+    </div>
+
+    <div class="form-tambah-barang">
+      <input type="text" id="barangBaru" placeholder="Nama Barang Baru">
+      <input type="number" id="hargaBaru" placeholder="Harga Barang (Rp)">
+      <button onclick="tambahBarangBaru()">Tambah Barang Baru</button>
     </div>
 
     <table class="invoice-table">
@@ -233,8 +241,25 @@
       "KARPET 1 METER": 10000
     };
 
-    const today = new Date();
-    document.getElementById("tanggal").textContent = today.toLocaleDateString("id-ID");
+const today = new Date();
+document.getElementById("tanggal").textContent = today.toLocaleDateString("id-ID");
+
+// Ambil nomor invoice terakhir dari LocalStorage
+let lastInvoiceNumber = localStorage.getItem("lastInvoiceNumber");
+if (!lastInvoiceNumber) {
+  lastInvoiceNumber = 1;
+} else {
+  lastInvoiceNumber = parseInt(lastInvoiceNumber) + 1;
+}
+
+// Simpan kembali nomor terbaru ke LocalStorage
+localStorage.setItem("lastInvoiceNumber", lastInvoiceNumber);
+
+// Format nomor invoice (3 digit, misal: 001, 002)
+const formattedInvoice = "INV-" + String(lastInvoiceNumber).padStart(3, "0");
+document.getElementById("nomor-invoice").textContent = formattedInvoice;
+
+
 
     let dataBarang = [];
 
@@ -257,6 +282,28 @@
       dataBarang.push({ barang, jumlah, harga, total });
       renderTabel();
       resetForm();
+    }
+        function tambahBarangBaru() {
+      const namaBaru = document.getElementById("barangBaru").value.trim();
+      const hargaBaru = parseInt(document.getElementById("hargaBaru").value);
+
+      if (!namaBaru || isNaN(hargaBaru) || hargaBaru <= 0) {
+        alert("Nama dan harga barang harus diisi dengan benar!");
+        return;
+      }
+
+      const barangSelect = document.getElementById("barang");
+      const option = document.createElement("option");
+      option.text = namaBaru;
+      option.value = namaBaru;
+      barangSelect.appendChild(option);
+
+      hargaDefault[namaBaru] = hargaBaru;
+
+      document.getElementById("barangBaru").value = "";
+      document.getElementById("hargaBaru").value = "";
+
+      alert(`Barang "${namaBaru}" berhasil ditambahkan.`);
     }
 
     function hapusBarang(index) {
