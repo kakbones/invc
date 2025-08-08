@@ -17,12 +17,28 @@
       z-index: 0;
       pointer-events: none;
     } 
-
-.invoice-container > * {
-  position: relative;
-  z-index: 1;
-}
-
+    .invoice-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 50px;
+      font-family: Arial, sans-serif;
+    }
+    .footer-left {
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .footer-right {
+      text-align: center;
+      width: 180px; /* lebar area tanda tangan */
+    }
+    .director-name {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .director-title {
+      font-size: 12px;
+    }
     .header {
       text-align: center;
       font-size: 24px;
@@ -130,4 +146,13 @@
         display: block !important;
         padding: 4px 0;
       }
+        .invoice-footer {
+        position: fixed;
+        bottom: 500px;
+        left: 0;
+        right: 0;
+        justify-content: space-between;
+        padding: 0 10mm; /* jarak kiri-kanan */
+      }
     }
+
