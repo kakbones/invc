@@ -126,26 +126,36 @@
 
 <hr style="border: 1px solid #000; margin-bottom: 15px;">
 
-    <p><strong>No. Invoice:</strong> <span id="nomor-invoice">INV-001</span></p>
-    <p><strong>Tanggal:</strong> <span id="tanggal"></span></p>
-
     <table class="form-identitas">
       <tr>
-        <td><strong>Nama:</strong></td>
+      <td class="label"><strong>No. Invoice</strong></td>
+      <td class="colon">:</td>
+      <td><span id="nomor-invoice">INV-001</span></td>
+    </tr>
+    <tr>
+      <td class="label"><strong>Tanggal</strong></td>
+      <td class="colon">:</td>
+      <td><span id="tanggal"></span></td>
+  </tr>
+      <tr>
+        <td class="label"><strong>Nama</strong></td>
+          <td class="colon">:</td>
         <td>
           <input type="text" id="inputNama" oninput="updatePreview()">
           <div class="print-text" id="previewNama"></div>
         </td>
       </tr>
       <tr>
-        <td><strong>Alamat:</strong></td>
+        <td class="label"><strong>Alamat</strong></td>
+          <td class="colon">:</td>
         <td>
           <input type="text" id="inputAlamat" oninput="updatePreview()">
           <div class="print-text" id="previewAlamat"></div>
         </td>
       </tr>
       <tr>
-        <td><strong>No. Telp:</strong></td>
+        <td class="label"><strong>No. Telp</strong></td>
+          <td class="colon">:</td>
         <td>
           <input type="text" id="inputTelp" oninput="updatePreview()">
           <div class="print-text" id="previewTelp"></div>
@@ -383,10 +393,11 @@ document.getElementById("nomor-invoice").textContent = formattedInvoice;
     <strong> Terima Kasih Atas Pesanan Anda</strong>
     </div>
   <div class="footer-right">
-    <div class="director-name">Juliana Silva</div>
+    <div class="director-name">Rifqi Ayzudin</div>
     <div class="director-title">Direktur</div>
   </div>
 </div>
 </body>
 </html>
+
 
