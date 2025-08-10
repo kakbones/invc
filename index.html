@@ -127,7 +127,7 @@
 <hr style="border: 1px solid #000; margin-bottom: 15px;">
 
     <table class="form-identitas">
-      <tr>
+    <tr>
       <td class="label"><strong>No. Invoice</strong></td>
       <td class="colon">:</td>
       <td><span id="nomor-invoice">INV-001</span></td>
@@ -228,7 +228,7 @@
   </div>
 
   <script>
-    const hargaDefault = {
+    let hargaDefault = JSON.parse(localStorage.getItem("hargaDefault")) || {
       "TENDA POLOS 4X6": 300000,
       "TENDA SEMI 4X6": 400000,
       "TENDA BALON 4X6": 600000,
@@ -277,8 +277,6 @@ localStorage.setItem("lastInvoiceNumber", lastInvoiceNumber);
 const formattedInvoice = "INV-" + String(lastInvoiceNumber).padStart(3, "0");
 document.getElementById("nomor-invoice").textContent = formattedInvoice;
 
-
-
     let dataBarang = [];
 
     document.getElementById("barang").addEventListener("change", function () {
@@ -317,6 +315,7 @@ document.getElementById("nomor-invoice").textContent = formattedInvoice;
       barangSelect.appendChild(option);
 
       hargaDefault[namaBaru] = hargaBaru;
+      localStorage.setItem("hargaDefault", JSON.stringify(hargaDefault));
 
       document.getElementById("barangBaru").value = "";
       document.getElementById("hargaBaru").value = "";
@@ -354,22 +353,28 @@ document.getElementById("nomor-invoice").textContent = formattedInvoice;
       document.getElementById("total-akhir").textContent = "TOTAL: Rp " + totalAkhir.toLocaleString('id-ID');
     }
 
-    function updateHarga(index, newHarga) {
-      newHarga = parseInt(newHarga) || 0;
-      dataBarang[index].harga = newHarga;
-      dataBarang[index].total = newHarga * dataBarang[index].jumlah;
+function updateHarga(index, newHarga) {
+  newHarga = parseInt(newHarga) || 0;
+  dataBarang[index].harga = newHarga;
+  dataBarang[index].total = newHarga * dataBarang[index].jumlah;
 
-      document.getElementById(`total-${index}`).textContent = "Rp " + dataBarang[index].total.toLocaleString('id-ID');
+  // Update harga default & simpan ke localStorage
+  hargaDefault[dataBarang[index].barang] = newHarga;
+  localStorage.setItem("hargaDefault", JSON.stringify(hargaDefault));
 
-      const baris = document.querySelectorAll("#tabel-barang tr")[index];
-      const printText = baris.querySelector(".print-text");
-      if (printText) {
-        printText.textContent = "Rp " + newHarga.toLocaleString('id-ID');
-      }
+  document.getElementById(`total-${index}`).textContent =
+    "Rp " + dataBarang[index].total.toLocaleString('id-ID');
 
-      let totalAkhir = dataBarang.reduce((sum, item) => sum + item.total, 0);
-      document.getElementById("total-akhir").textContent = "TOTAL: Rp " + totalAkhir.toLocaleString('id-ID');
-    }
+  const baris = document.querySelectorAll("#tabel-barang tr")[index];
+  const printText = baris.querySelector(".print-text");
+  if (printText) {
+    printText.textContent = "Rp " + newHarga.toLocaleString('id-ID');
+  }
+
+  let totalAkhir = dataBarang.reduce((sum, item) => sum + item.total, 0);
+  document.getElementById("total-akhir").textContent =
+    "TOTAL: Rp " + totalAkhir.toLocaleString('id-ID');
+}
 
     function resetForm() {
       document.getElementById("barang").value = "";
@@ -397,8 +402,6 @@ document.getElementById("nomor-invoice").textContent = formattedInvoice;
     <div class="director-title">Direktur</div>
   </div>
 </div>
+</div>
 </body>
 </html>
-
-
-
