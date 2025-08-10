@@ -17,12 +17,10 @@
       z-index: 0;
       pointer-events: none;
     } 
-    .invoice-footer {
+   .invoice-footer {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-top: 50px;
-      font-family: Arial, sans-serif;
+      margin-top: 20mm; /* jarak dari TOTAL */
     }
     .footer-left {
       font-weight: bold;
@@ -52,6 +50,14 @@
     table.form-identitas td {
       padding: 3px 10px 3px 0;
       vertical-align: top;
+    }
+    .form-identitas .label {
+      width: 110px; /* panjang label seragam */
+      font-weight: bold;
+    }
+    .form-identitas .colon {
+      width: 10px;
+      text-align: center;
     }
     table.form-identitas input {
       padding: 6px 10px;
@@ -146,13 +152,8 @@
         display: block !important;
         padding: 4px 0;
       }
-        .invoice-footer {
-        position: fixed;
-        bottom: 500px;
-        left: 0;
-        right: 0;
-        justify-content: space-between;
-        padding: 0 10mm; /* jarak kiri-kanan */
+      .invoice-footer {
+        margin-top: 10mm; /* atur sesuai kebutuhan */
+        page-break-inside: avoid; /* biar tidak terpotong halaman */
       }
     }
-
